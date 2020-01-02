@@ -1,0 +1,23 @@
+{
+  "name": "node-example",
+  "version": "1.0.0",
+  "description": "This example is so cool.",
+  "main": "1after.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "example",
+    "heroku"
+  ],
+  "author": "dvir kovalio zehavit otmazgin",
+  "license": "MIT",
+  "dependencies": {
+    "express": "4.17.1",
+    "body-parser": "1.19.0",
+    "nodemailer": "6.4.2"
+  },
+  "engines": {
+    "node": "10.x"
+  }
+}

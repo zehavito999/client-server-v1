@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<!-- Popper JS -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> 
+
+<style>
+body {background: #18283d url('https://images.pexels.com/photos/443356/pexels-photo-443356.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') center center no-repeat; 
+background-size: cover; 
+margin: 0; padding: 0; overflow: hidden; min-height: 100vh;}
+
+    #login .container #login-row #login-column #login-box {
+      margin-top: 120px;
+      max-width: 500px;
+      height: 350px;
+      border: 3px solid rgb(255, 255, 255);
+      background-color: #1fe0;
+
+    }
+    #login .container #login-row #login-column #login-box #login-form {
+      padding: 35px;
+    }
+    #login .container #login-row #login-column #login-box #login-form #register-link {
+      margin-top: -85px;
+    }
+    span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+  span.psw {
+     display: block;
+     float: none;
+  }
+  .cancelbtn {
+     width: 100%;
+  }
+
+
+</style>
+</head>
+<body>
+
+<form action="/action_page.php" method="post">
+  <div class="center">
+  <div class="container">
+<div class="wrapper">
+
+<body>
+    <div id="login">
+        <div class="container">
+            <div id="login-row" class="row justify-content-center align-items-center">
+                <div id="login-column" class="col-md-4">
+                    <div id="login-box" class="col-md-8">
+                        <form id="login-form" class="form"  action="" method="post">
+                            <h3 class="text-center " style="font-size:30px; color:rgb(0, 0, 0)"> Login</h3>
+                            <div class="form-group">
+                                <label for="uname"><b>Username</b></label>
+                                <input type="text" class="form-control" placeholder="Enter Username" style="font-size:20px" name="uname" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="psw"><b>Password</b></label>
+                                <input type="password" class="form-control" placeholder="Enter Password" style="font-size:20px" name="psw" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="remember-me"  style="font-size:20px; color:rgb(0, 0, 0) "><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br>
+                                <button type="submit"  class="btn btn-primary">Submit</button>
+                            </div>
+                            <div id="signup-link" class="text-center">
+                                <p>Need an account? <a href="signup" style="color:dodgerblue"  >Sign up</a>.</p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</body>
+</html>
