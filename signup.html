@@ -90,11 +90,12 @@
       font-size: 1rem;
       line-height: 1.25;
       padding: 5px;
+    }
     </style>
 </head>
 <body>
 
-  <form action="/action_page.php" method="post">
+  <form method="post">
     <div class="center">
       <div class="container">
         <div class="wrapper">
@@ -105,13 +106,13 @@
                 <div id="signup-column" class="col-md-4">
                   <div id="signup-box" class="col-md-8">
                     <form id="signup-form" class="form" action="" method="post">
-                      <h3 class="text-center " style="font-size:30px; color:rgb(0, 0, 0)">Sign Up</h3>
+                      <h3 class='text-center' style='font-size:30px; color:rgb(0, 0, 0);'>Sign Up</h3>
                       <br>
                       <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Enter Email" id="email" required>
+                        <input type="text" class="form-control" placeholder="Enter Email" id="email" name="email" required>
                       </div>
                       <div class="form-group">
-                        <input type="password" class="form-control" placeholder="Enter Password" id="psw" required>
+                        <input type="password" class="form-control" placeholder="Enter Password" id="psw" name="password" required>
                       </div>
                       <div class="form-group">
                         <input type="password" class="form-control" placeholder="Confirm Password" id="psw_conf"

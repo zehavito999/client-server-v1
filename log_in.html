@@ -57,7 +57,7 @@ margin: 0; padding: 0; overflow: hidden; min-height: 100vh;font-family:Arial, He
 </head>
 <body>
 
-<form action="/action_page.php" method="post">
+<form method="post">
   <div class="center">
   <div class="container">
 <div class="wrapper">
@@ -72,20 +72,20 @@ margin: 0; padding: 0; overflow: hidden; min-height: 100vh;font-family:Arial, He
                             <h3 class="text-center " style="font-size:30px; color:rgb(0, 0, 0)"> Login</h3>
                             <br>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter Username" style="font-size:15px; color:rgb(0, 0, 0)" name="uname" required>
+                                <input type="text" class="form-control" placeholder="Enter Username" style="font-size:15px; color:rgb(0, 0, 0)" name="email" required>
                             </div>
                             <div class="form-group">
-                                <input type="password" class="form-control" placeholder="Enter Password" style="font-size:15px; color:rgb(0, 0, 0)"  name="psw" required>
+                                <input type="password" class="form-control" placeholder="Enter Password" style="font-size:15px; color:rgb(0, 0, 0)"  name="password" required>
                             </div>
                             <div class="form-group">
                               <div class="d-flex justify-content-center links">
-                                <a href="/forgotPSW.html">Forgot password?</a>
+                                <a href="/forgotPSW">Forgot password?</a>
                               </div>
                             
                                 <button type="submit"  class="btn btn-primary btn-lg btn-block" id="form-submit">Submit</button>
                             </div>
                             <div id="signup-link" class="text-center"><br>
-                                <p>Need an account? <a href="signup.html" style="color:dodgerblue"  >Sign up</a></p>
+                                <p>Need an account? <a href="/signup" style="color:dodgerblue"  >Sign up</a></p>
                             </div>
                         </form>
                     </div>
