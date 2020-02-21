@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> 
+
+  <style>
+    body {background: #18283d url('https://images.pexels.com/photos/443356/pexels-photo-443356.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') center center no-repeat; 
+    background-size: cover; 
+    margin: 0; padding: 0; overflow: hidden; min-height: 100vh;font-family:Arial, Helvetica, sans-serif}
+    
+        #forgotPSW .container #forgotPSW-row #forgotPSW-column #forgotPSW-box {
+          margin-top: 120px;
+          max-width: 500px;
+          height: 170px;
+          border: 3px solid rgb(255, 255, 255);
+          background-color: #1fe0;
+    
+        }
+        #forgotPSW .container #forgotPSW-row #forgotPSW-column #forgotPSW-box #forgotPSW-form {
+          padding: 35px;
+        }
+        #forgotPSW .container #forgotPSW-row #forgotPSW-column #forgotPSW-box #forgotPSW-form #register-link {
+          margin-top: -85px;
+        }
+      .cancelbtn {
+         width: 100%;
+      }
+      .btn {
+        width:col-md-4;
+        font-size: 1rem;
+        line-height: 1.25;
+        padding:5px;
+    }
+    
+    </style>
+    </head>
+    <body>
+    
+    <form action="/action_page.php" method="post">
+      <div class="center">
+      <div class="container-sm">
+    <div class="wrapper">
+    
+        <div id="forgotPSW">
+            <div class="container">
+                <div id="forgotPSW-row" class="row justify-content-center align-items-center">
+                    <div id="forgotPSW-column" class="col-md-4">
+                        <div id="forgotPSW-box" class="col-md-8">
+                            <form id="forgotPSW-form" class="form"  action="" method="post">
+                                <h3 class="text-center " style="font-size:30px; color:rgb(0, 0, 0)"> Reset password</h3>
+                                <br>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Enter Email" id="email" required>
+                                </div>
+                                    <button type="submit"  class="btn btn-primary btn-lg btn-block" id="form-submit">Reset password</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+    </html>

@@ -14,14 +14,16 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> 
 
 <style>
-body {background: #18283d url('https://images.pexels.com/photos/443356/pexels-photo-443356.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') center center no-repeat; 
+body {
+background: #18283d url('https://images.pexels.com/photos/443356/pexels-photo-443356.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') center center no-repeat; 
 background-size: cover; 
-margin: 0; padding: 0; overflow: hidden; min-height: 100vh;}
+margin: 0; padding: 0; overflow: hidden; min-height: 100vh;font-family:Arial, Helvetica, sans-serif
+}
 
     #login .container #login-row #login-column #login-box {
       margin-top: 120px;
       max-width: 500px;
-      height: 350px;
+      height: 300px;
       border: 3px solid rgb(255, 255, 255);
       background-color: #1fe0;
 
@@ -44,7 +46,12 @@ margin: 0; padding: 0; overflow: hidden; min-height: 100vh;}
   .cancelbtn {
      width: 100%;
   }
-
+  .btn {
+    width:col-md-4;
+    font-size: 1rem;
+    line-height: 1.25;
+    padding:5px;
+}
 
 </style>
 </head>
@@ -55,7 +62,7 @@ margin: 0; padding: 0; overflow: hidden; min-height: 100vh;}
   <div class="container">
 <div class="wrapper">
 
-<body>
+
     <div id="login">
         <div class="container">
             <div id="login-row" class="row justify-content-center align-items-center">
@@ -63,20 +70,22 @@ margin: 0; padding: 0; overflow: hidden; min-height: 100vh;}
                     <div id="login-box" class="col-md-8">
                         <form id="login-form" class="form"  action="" method="post">
                             <h3 class="text-center " style="font-size:30px; color:rgb(0, 0, 0)"> Login</h3>
+                            <br>
                             <div class="form-group">
-                                <label for="uname"><b>Username</b></label>
-                                <input type="text" class="form-control" placeholder="Enter Username" style="font-size:20px" name="uname" required>
+                                <input type="text" class="form-control" placeholder="Enter Username" style="font-size:15px; color:rgb(0, 0, 0)" name="uname" required>
                             </div>
                             <div class="form-group">
-                                <label for="psw"><b>Password</b></label>
-                                <input type="password" class="form-control" placeholder="Enter Password" style="font-size:20px" name="psw" required>
+                                <input type="password" class="form-control" placeholder="Enter Password" style="font-size:15px; color:rgb(0, 0, 0)"  name="psw" required>
                             </div>
                             <div class="form-group">
-                                <label for="remember-me"  style="font-size:20px; color:rgb(0, 0, 0) "><span>Remember me</span> <span><input id="remember-me" name="remember-me" type="checkbox"></span></label><br>
-                                <button type="submit"  class="btn btn-primary">Submit</button>
+                              <div class="d-flex justify-content-center links">
+                                <a href="/forgotPSW.html">Forgot password?</a>
+                              </div>
+                            
+                                <button type="submit"  class="btn btn-primary btn-lg btn-block" id="form-submit">Submit</button>
                             </div>
-                            <div id="signup-link" class="text-center">
-                                <p>Need an account? <a href="signup" style="color:dodgerblue"  >Sign up</a>.</p>
+                            <div id="signup-link" class="text-center"><br>
+                                <p>Need an account? <a href="signup.html" style="color:dodgerblue"  >Sign up</a></p>
                             </div>
                         </form>
                     </div>
@@ -84,6 +93,5 @@ margin: 0; padding: 0; overflow: hidden; min-height: 100vh;}
             </div>
         </div>
     </div>
-</body>
 </body>
 </html>
