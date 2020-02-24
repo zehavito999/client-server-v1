@@ -1,6 +1,6 @@
 const { Client } = require("pg");
 var crypto = require("./crypto.js");
-let client = new Client({
+let DBclient = new Client({
   user: "mbrvghkljmubyo",
   host: "ec2-54-246-89-234.eu-west-1.compute.amazonaws.com",
   database: "d48571o9ql6qjg",
@@ -10,16 +10,15 @@ let client = new Client({
 });
 
 function init() {
-  client.connect();
+  DBclient.connect();
 }
 
 const schemaName = "project";
 
 function getUsers() {
   let query1 = "select * from " + schemaName + ".users";
-
-  return new Promise(function(resolve, reject) {
-    client.query(query1, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    DBclient.query(query1, function (err, result) {
       if (result.rowCount == 0) {
         return resolve([]);
       } else if (err) {
@@ -32,30 +31,26 @@ function getUsers() {
   });
 }
 
-function addNewUser(userName, userPassword) {
-    console.log(userName,userPassword)
-  var encryptedPass = crypto.encryptPassword(userPassword);
-
+function addUser(username, userPsw) {
+  console.log(username, userPsw)
+  var encryptedPsw1 = crypto.encryptPsw(userPsw);
   let userPromise = this.getUsers();
-
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     userPromise.then(result => {
-      let isUserExist = false;
-
+      let userExistance = false;
       if (result.length > 0) {
         result.forEach(user => {
-          if (user.email == userName) {
-            isUserExist = true;
+          if (user.email == username) {
+            userExistance = true;
           }
         });
-
-        if (isUserExist) {
-          console.log(`user aleady exist!`);
+        if (userExistance) {
+          console.log(`The user is aleady exist!`);
           resolve(false);
         } else {
-          let query = `INSERT INTO ${schemaName}.users (email, password) VALUES ('${userName}', '${encryptedPass}');`;
+          let query = `INSERT INTO ${schemaName}.users (email, password) VALUES ('${username}', '${encryptedPsw1}');`;
 
-          client.query(query, function(err, result) {
+          DBclient.query(query, function (err, result) {
             if (err) {
               console.log(err.stack);
             }
@@ -67,59 +62,68 @@ function addNewUser(userName, userPassword) {
   });
 }
 
-function isUserAuthenticate(userName, userPassword) {
-    let query = `select email, password  from ${schemaName}.users where email='${userName}'`;
-    return new Promise(function(resolve, reject) {
-      client.query(query, function(err, result) {
-        if (err) {
-          console.log(err.stack);
-          return reject(err);
-        } else {
-          if (result.rowCount > 0) {
-            var decryptPassword = crypto.decryptPassword(
-              result.rows[0].password
-            );
-            if (decryptPassword == userPassword) {
-              console.log(`${result.rows[0].email} connected!`);
-              return resolve(true);
-            }
+function isUserOK(username, userPsw) {
+  console.log(userPsw)
+  let query = `select email, password  from ${schemaName}.users where email='${username}'`;
+  return new Promise(function (resolve, reject) {
+    DBclient.query(query, function (err, result) {
+      if (err) {
+        console.log(err.stack);
+        return reject(err);
+      } else {
+        if (result.rowCount > 0) {
+          var decryptPsw1 = crypto.decryptPsw(
+            result.rows[0].password
+          );
+          console.log(decryptPsw1 + userPsw)
+          if (decryptPsw1 == userPsw) {
+            console.log(`${result.rows[0].email} connected!`);
+            return resolve(true);
           }
         }
-        console.log(`worng password or username`);
-        return resolve(false);
-      });
+      }
+      console.log(`Wrong password or username!`);
+      return resolve(false);
     });
-  }
+  });
+}
 
-  function fetchData() {
-    let query = `select *  from ${schemaName}.data1`;
+function importData(user_email, res) {
 
-    return new Promise(function(resolve, reject) {
-      client.query(query, function(err, result) {
-        if (err) {
-          console.log(err.stack);
-          return reject(err);
-        } else {
-          let allData = [];
+  let query = `SELECT * FROM ${schemaName}.data1 WHERE email='` + user_email + `'`
+  // let query = `select *  from ${schemaName}.data1`;
+  DBclient.query(query).then(results => {
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(results.rows));
+    // res.writeHead(200, {'Content-Type': 'application/json'});
+    // res.end(JSON.stringify(reults.rows));
 
-          for (let j = 0; j < result.rowCount; j++) {
-            var item = result.rows[j];
-            allData.push({
-              email: item.email,
-              data1: item.data1,
-              data2: item.data2,
-              lat: item.lat,
-              long: item.long
-            });
-          }
-          return resolve(allData);
-        }
-      });
-    });
-  }
+  }).catch(() => {
+    console.error("DB failed in attempt");
+  });
 
-module.exports.addNewUser = addNewUser;
+}
+function getPassword(user_email, res) {
+  let query = `select email, password  from ${schemaName}.users where email='${user_email}'`;
+  DBclient.query(query, function (err, result) {
+    if (err) {
+      console.log(err.stack);
+      return reject(err);
+    }
+    else {
+      if (result.rowCount > 0) {
+        var decryptPsw1 = crypto.decryptPsw(
+          result.rows[0].password
+        );
+        return decryptPsw1;
+      }
+    }
+  });
+}
+  
+module.exports.getPassword = getPassword;
+module.exports.addUser = addUser;
 module.exports.getUsers = getUsers;
 module.exports.init = init;
-module.exports.isUserAuthenticate = isUserAuthenticate;
-module.exports.fetchData = fetchData;
+module.exports.isUserOK = isUserOK;
+module.exports.importData = importData;

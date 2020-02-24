@@ -1,97 +1,193 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">  
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-	<!-- jQuery library -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<!-- Popper JS -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-	<!-- Latest compiled JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+  <!-- Popper JS -->
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
+  <!-- Latest compiled JavaScript -->
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>  -->
 
-<style>
-body {
-background: #18283d url('https://images.pexels.com/photos/443356/pexels-photo-443356.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') center center no-repeat; 
-background-size: cover; 
-margin: 0; padding: 0; overflow: hidden; min-height: 100vh;font-family:Arial, Helvetica, sans-serif
-}
+
+
+
+
+  <style>
+    body {
+      background: #18283d url('https://images.pexels.com/photos/443356/pexels-photo-443356.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940') center center no-repeat;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif
+    }
 
     #login .container #login-row #login-column #login-box {
       margin-top: 120px;
       max-width: 500px;
-      height: 300px;
+      height: 360px;
       border: 3px solid rgb(255, 255, 255);
       background-color: #1fe0;
 
     }
+
     #login .container #login-row #login-column #login-box #login-form {
       padding: 35px;
     }
+
     #login .container #login-row #login-column #login-box #login-form #register-link {
       margin-top: -85px;
     }
+
     span.psw {
-  float: right;
-  padding-top: 16px;
-}
+      float: right;
+      padding-top: 16px;
+    }
 
-  span.psw {
-     display: block;
-     float: none;
-  }
-  .cancelbtn {
-     width: 100%;
-  }
-  .btn {
-    width:col-md-4;
-    font-size: 1rem;
-    line-height: 1.25;
-    padding:5px;
-}
+    span.psw {
+      display: block;
+      float: none;
+    }
 
-</style>
+    .cancelbtn {
+      width: 100%;
+    }
+
+    .btn {
+      width: col-md-4;
+      font-size: 1rem;
+      line-height: 1.25;
+      padding: 5px;
+    }
+  </style>
 </head>
+
 <body>
 
-<form method="post">
   <div class="center">
-  <div class="container">
-<div class="wrapper">
-
-
-    <div id="login">
-        <div class="container">
+    <div class="container">
+      <div class="wrapper">
+        <div id="login">
+          <div class="container">
             <div id="login-row" class="row justify-content-center align-items-center">
-                <div id="login-column" class="col-md-4">
-                    <div id="login-box" class="col-md-8">
-                        <form id="login-form" class="form"  action="" method="post">
-                            <h3 class="text-center " style="font-size:30px; color:rgb(0, 0, 0)"> Login</h3>
-                            <br>
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Enter Username" style="font-size:15px; color:rgb(0, 0, 0)" name="email" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="password" class="form-control" placeholder="Enter Password" style="font-size:15px; color:rgb(0, 0, 0)"  name="password" required>
-                            </div>
-                            <div class="form-group">
-                              <div class="d-flex justify-content-center links">
-                                <a href="/forgotPSW">Forgot password?</a>
-                              </div>
-                            
-                                <button type="submit"  class="btn btn-primary btn-lg btn-block" id="form-submit">Submit</button>
-                            </div>
-                            <div id="signup-link" class="text-center"><br>
-                                <p>Need an account? <a href="/signup" style="color:dodgerblue"  >Sign up</a></p>
-                            </div>
-                        </form>
+              <div id="login-column" class="col-md-4">
+                <div id="login-box" class="col-md-8">
+                  <h3 class="text-center " style="font-size:30px; color:rgb(0, 0, 0)"> Login</h3>
+                  <br>
+                  <div class="form-group">
+                    <input type="text" id="email" class="form-control" placeholder="Enter Username"
+                      style="font-size:15px; color:rgb(0, 0, 0)" name="email" required>
+                    <label id="emailerrormsg" style="color:red"></label>
+                  </div>
+                  <div class="form-group">
+                    <input type="password" id="password" class="form-control" placeholder="Enter Password"
+                      style="font-size:15px; color:rgb(0, 0, 0)" name="password" required>
+                      <label id="pswwrong" style="color:red"></label>
+                  </div>
+                  <div class="form-group">
+                    <div class="d-flex justify-content-center links"> 
+                      <a href="/forgotPSW">Forgot password?</a>
                     </div>
+                    <button type="button" onclick="login()" class="btn btn-primary btn-lg btn-block">Submit</button>
+                  </div>
+                  <label id="server_response" style="color:red"></label>
+                  <div id="signup-link" class="text-center"><br>
+                    <p>Need an account? <a href="/signup" style="color:dodgerblue">Sign up</a></p>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+  
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script>
+      function validateEmail(email) {
+        var mail_reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return (mail_reg.test(email));
+      }
+
+      function checkPassword(password)
+{
+    var psw;
+    if(password.length < 6)
+    {
+        return false;
+    }
+    psw=/[A-Z]/;
+    if(!psw.test(password))
+    {
+        return false;
+    }
+    psw=/[a-z]/;
+    if(!psw.test(password))
+    {
+        return false;
+    }
+    psw=/\d/;
+    if(!psw.test(password))
+    {
+        return false;
+    }
+    psw=/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if(!psw.test(password))
+    {
+        return false;
+    }
+    return true;
+}
+
+      function login() {
+        var userData = {
+          email: document.getElementById('email').value,
+          psw: document.getElementById('password').value
+        }
+        if (validateEmail(userData.email) == false) {
+          document.getElementById("emailerrormsg").innerHTML = "<small> Invalid Email </small>";
+          return;
+        }
+        if(checkPassword(userData.psw) == false){
+        console.log(222)
+        document.getElementById("pswwrong").innerHTML ="<small> password must contain at least 6 characters, uppercase, lowercase, number, special character.</small>";
+        return;
+
+    }
+        $.ajax({
+          type: 'POST',
+          url: '/login',
+          data: userData,
+          // Login Successful
+          success: function (userData) {
+            console.log("success");
+            sessionStorage.setItem("user", JSON.stringify(userData));
+            location.replace("/data");
+          },
+          error: function () {
+            console.log("error");
+            document.getElementById("pswwrong").innerHTML=""
+            document.getElementById("server_response").innerHTML = "<small>wrong details! </small>";
+            // location.replace("/");
+          }
+        });
+
+      }
+    </script>
 </body>
-</html>
+
+</html> -->

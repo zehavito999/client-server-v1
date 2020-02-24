@@ -44,9 +44,25 @@
     
     </style>
     </head>
+    <script>
+      function forgetPsW()
+      {
+        var newUserData={
+        email: document.getElementById("email").value,
+        }
+        $.ajax({
+        type: 'POST',
+        url: '/forget',
+        data: newUserData,
+        // Login Successful
+        success: function(userData){
+        location.replace("/data")},
+
+    });
+  }
+    </script>
     <body>
     
-    <form action="/action_page.php" method="post">
       <div class="center">
       <div class="container-sm">
     <div class="wrapper">
@@ -56,15 +72,14 @@
                 <div id="forgotPSW-row" class="row justify-content-center align-items-center">
                     <div id="forgotPSW-column" class="col-md-4">
                         <div id="forgotPSW-box" class="col-md-8">
-                            <form id="forgotPSW-form" class="form"  action="" method="post">
+
                                 <h3 class="text-center " style="font-size:30px; color:rgb(0, 0, 0)"> Reset password</h3>
                                 <br>
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="Enter Email" id="email" required>
                                 </div>
-                                    <button type="submit"  class="btn btn-primary btn-lg btn-block" id="form-submit">Reset password</button>
+                                    <button type="button"  class="btn btn-primary btn-lg btn-block"  id="form-submit" onclick="forgetPsW()">Reset password</button>
                                 </div>
-                            </form>
                         </div>
                     </div>
                 </div>

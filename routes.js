@@ -5,25 +5,28 @@ var bodyParser = require("body-parser");
 var db = require("./db.js");
 db.init();
 var app = express();
+var http = require('http');
+var url = require('url');
+
+var transporter = nodeMailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: "clientserver2020@gmail.com",
+    pass: "Qwerty!234"
+  }
+});
 
 app.use(express.static("src"));
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
-app.post("/send_mail", function(req, res) {
-  var transporter = nodeMailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 465,
-    secure: true,
-    auth: {
-      // should be replaced with real sender's account
-      user: "clientserver2020@gmail.com",
-      pass: "Qwerty!234"
-    }
-  });
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+
+app.post("/ContactUs", function(req, res) {
+  
   var mailOptions = {
-    // should be replaced with real recipient's account
     to: "clientserver2020@gmail.com",
     subject: req.body.fname + " " + req.body.lname + " " + req.body.email,
     text: req.body.comment
@@ -35,23 +38,39 @@ app.post("/send_mail", function(req, res) {
     }
     console.log("Message %s sent: %s", info.messageId, info.response);
   });
-  res.sendFile(path.join(__dirname + "/sucss.html"));
+  res.sendFile(path.join(__dirname + "/data.html"));
 });
 
-app.get("/", function(req, res) {
+app.get('/forgotPSW', function(req,res){
+  res.sendFile(path.join(__dirname + "/forgotPSW.html"))
+});
+
+app.get('/', function(req,res){
+  res.redirect('/login');
+});
+
+app.get("/login", function(req, res) {
   res.sendFile(path.join(__dirname + "/log_in.html"));
 });
 
-app.post("/", (req, res) => {
-  let email = req.body.email;
+app.post("/login", (req, res) => {
+  let useremail = req.body.email;
+  console.log(req.body.email);
+  let userpassword = req.body.psw;
+  console.log(req.body.psw);
+  var data = {
+    email: useremail,
+    password: userpassword
+  }
+  isOKResult = db.isUserOK(useremail, req.body.psw);
 
-  authResultPromise = db.isUserAuthenticate(email, req.body.password);
-
-  authResultPromise.then(result => {
+  isOKResult.then(result => {
     if (result) {
-      res.redirect("/data");
+      res.writeHead(200, {'Content-Type': 'application/json'});
+      res.end(JSON.stringify(data));
     } else {
-      res.sendFile(path.join(__dirname + "/worngPassOrEmail.html"));
+      res.writeHead(400);
+      res.end();
     }
   });
 });
@@ -60,33 +79,80 @@ app.get("/signup", function(req, res) {
   res.sendFile(path.join(__dirname + "/signup.html"));
 });
 
+
+
+app.post("/signup", (req, res) => {
+  let user = db.addUser(req.body.email, req.body.password);
+  var mailOptions = {
+    // should be replaced with real recipient's account
+    to: req.body.email,
+    subject: "Welcome on bord",
+    text: "We are happy you join us!"
+  };
+  
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return console.log(error);
+    }
+    console.log("Message %s sent: %s", info.messageId, info.response);
+  });
+  console.log(req);
+  user.then(result => {
+    if (result) {
+      res.redirect("/data");
+    } else {
+      res.writeHead(400);
+      res.end();
+    }
+  });
+});
+
+app.post("/forget", (req, res) => {
+  let password = db.getPassword(req.body.email,res);
+  console.log("user")
+  var mailOptions = {
+    to: req.body.email,
+    subject: "A password reminder",
+    text: "your password is:" +password
+  };
+  
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+    }
+    console.log("Message %s sent: %s", info.messageId, info.response);
+    
+   
+  });
+  console.log(req);
+  user.then(result => {
+    if (result) {
+      res.redirect("/log_in");
+    } else {
+      res.writeHead(400);
+      res.end();
+    }
+  });
+});
+
+
+
+
+
 app.get("/data", function(req, res) {
   res.sendFile(path.join(__dirname + "/data.html"));
 });
 
-app.post("/signup", (req, res) => {
-  let userPromise = db.addNewUser(req.body.email, req.body.password);
-  console.log(req);
-  userPromise.then(result => {
-    if (result) {
-      res.redirect("/data");
-    } else {
-      res.sendFile(path.join(__dirname + "/userExist.html"));
-    }
-  });
-});
-//to change
-app.get("/dataTable", (req, res) => {
-      data = db.fetchData();
-  
-      data.then(result => {
-        res.json(result);
-      });
+
+app.post("/dataTable", (req, res) => {
+      loginUser= req.body.user;
+      db.importData(loginUser, res);
   });
 
 app.get("/ContactUs", function(req, res) {
-  res.sendFile(path.join(__dirname + "/ContactUs.html"));
+  res.sendFile(path.join(__dirname + "/contactUs.html"));
 });
+
 
 const port = process.env.PORT || 8081;
 app.listen(port, () => console.log(`Server started at port: ${port}!`));

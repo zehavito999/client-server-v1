@@ -15,10 +15,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">  
   <meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--Bootsrap 4 CDN-->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     
     <!--Fontawesome CDN-->
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
 
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
 	<link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.6/css/rowReorder.dataTables.min.css">
@@ -63,53 +63,101 @@ margin: 0; padding: 0; overflow: hidden; min-height: 100vh;font-family:Arial, He
     line-height: 1.25;
     padding:5px;
 }
+.topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+
 
 </style>
 </head>
 <script type='text/javascript'>
     $( document ).ready(function() {
-
-        $.get("dataTable", function(data) {
-        let points = [];
-        data.forEach(element => {
-            $("#table-content").append(
-            "<tr>" +
-                `<td>${element.email}</td>` +
-                `<td>${element.data1}</td>` +
-                `<td>${element.data2}</td>` +
-                `<td>${element.lat}</td>` +
-                `<td>${element.long}</td>` +
-                "</tr>"
-            );
-
-            points.push({ lat: element.lat, lng: element.long });
+      loginUser = JSON.parse(sessionStorage.getItem("user")).email;
+      console.log(loginUser);
+      $.ajax({
+          type: 'POST',
+          url: '/dataTable',
+          data: {user: loginUser},
+          // Login Successful
+          success: function(data){
+            console.log("Aaaa")
+            console.log(data);
+            let points = [];
+            data.forEach(element => {
+                $("#table-content").append(
+                `<tr onclick="initMap(${element.lat}, ${element.long}, ${element.data1}, ${element.data2})">` +
+                    `<td>${element.data1}</td>` +
+                    `<td>${element.data2}</td>` +
+                    "</tr>"
+                );
+                points.push({ lat: element.lat, lng: element.long });
         });
 
+        console.log(points)
         $("#data-table").DataTable( {
             rowReorder: {
                 selector: 'td:nth-child(2)'
             },
             responsive: true
         } );
+        if(points.length > 0){
+          initMap(parseFloat(points[0].lat), parseFloat(points[0].lng), parseFloat(points[0].data1), parseFloat(points[0].data2))
+        }
+        else{
+          initMap(0,0,0,0)
+        }
         console.log(points)
-        initMap(points);
+          },
+          error: function(){
+              console.log("error");
+          }
         });
+
+        // $.get("dataTable", function(data) {
+        // let points = [];
+        // data.forEach(element => {
+        //     $("#table-content").append(
+        //     "<tr>" +
+        //         `<td>${element.data1}</td>` +
+        //         `<td>${element.data2}</td>` +
+        //         "</tr>"
+        //     );
+
+        //     points.push({ lat: element.lat, lng: element.long });
+        // });
+
+        // $("#data-table").DataTable( {
+        //     rowReorder: {
+        //         selector: 'td:nth-child(2)'
+        //     },
+        //     responsive: true
+        // } );
+        // console.log(points)
+        // initMap(points);
+        // });
 });
 
 // Initialize and add the map
-function initMap(points) {
+function initMap(mylat, mylong, data1, data2){
+    console.log(mylat, mylong);
+    var loction = {lat:mylat, lng: mylong};
+    var map = new google.maps.Map(
+    document.getElementById('map'), {zoom: 4, center: loction});
+    var marker = new google.maps.Marker({position: loction, map: map});
 
-  var map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 4,
-    center: points[1]
-  });
-
-  // The marker, positioned at Uluru
-  points.forEach(point => {
-    new google.maps.Marker({ position: point, map: map });
-  });
+    if (data1 && data2) {
+        var infowindow = new google.maps.InfoWindow({
+            content: '   Data1: ' + data1 + ', Data2: ' + data2
+        });
+        infowindow.open(map, marker);
+        }
 }
 
+ function logout(){
+   sessionStorage.removeItem("user");
+   location.replace('/');
+ }
 
 </script>
 					<!--Load the API from the specified URL
@@ -117,27 +165,45 @@ function initMap(points) {
 					* The key parameter will contain your own API key (which is not needed for this tutorial)
 					* The callback parameter executes the initMap() function
 					-->
-					<script async defer
-					src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsgQXyUjnnGoSFQXhAXPxeK1mOOAkAbEs&callback=initMap">
-					</script>
+          <script async defer
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBzNWjSdV5kTfGUZt-JU3HKI4liwN_u7nE&callback=initMap">
+          </script>
 <body>
         <div class="container">
+          <nav class="navbar navbar-expand-lg  navbar-light bg-light indigo">
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+              aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarText">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/data">Data</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/ContactUs">Contact us</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" onclick="logout()">Logout</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
                     <table id="example" class="table table-striped table-bordered" style="width:100%">
-                        <table id="data-table" class="display nowrap table table-dark table-striped table-bordered" style="width:100%">
+                        <table id="data-table" class="display nowrap table table-light table-striped table-bordered" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>UserName</th>
                                     <th>Data1</th>
                                     <th>Data2</th>
-                                    <th>Lat</th>
-                                    <th>Long</th>
                                 </tr>
                             </thead>
                             <tbody id="table-content">
-                                
                             </tbody>
                         </table>
-            </div>
             <div id="map" style="width:100%;height:400px;"></div>
+          </div>
 </body>
 </html>

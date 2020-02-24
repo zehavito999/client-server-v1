@@ -13,33 +13,105 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <!-- Latest compiled JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> 
+
   <script>
+  
     function validateEmail(email) {
       var mail_reg = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return (mail_reg.test(email));
     }
-
-    function CheckPassword(inputtxt, confirmation, email) {
-      var ok_psw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,}$/;
-      if (inputtxt == "" || confirmation == "" || email == "") {
-        alert('Please fill missing details');
-      }
-      if (inputtxt.value == confirmation.value) {
-        if (inputtxt.value.match(ok_psw)) {
-          if (validateEmail(email))
-            alert(inputtxt.value + ' ' + email)
-          return true;
-        }
-        else {
-          alert("Password is not good..")
-        }
-      }
-      else {
-        alert('Password does not match confirmation...!')
+    function checkPassword(password)
+{
+    var psw;
+    if(password.length < 6)
+    {
         return false;
-
-      }
     }
+    psw=/[A-Z]/;
+    if(!psw.test(password))
+    {
+        return false;
+    }
+    psw=/[a-z]/;
+    if(!psw.test(password))
+    {
+        return false;
+    }
+    psw=/\d/;
+    if(!psw.test(password))
+    {
+        return false;
+    }
+    psw=/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    if(!psw.test(password))
+    {
+        return false;
+    }
+    return true;
+}
+
+    function signUpAuthentication()
+{
+
+    var newUserData={
+        email: document.getElementById("email").value,
+        password: document.getElementById("psw").value,
+        confirm: document.getElementById("psw_conf").value
+    }
+    if (validateEmail(newUserData.email) == false) {
+          document.getElementById("emailWrong").innerHTML = "<small> Invalid Email </small>";
+          return;
+        }
+      document.getElementById("emailWrong").innerHTML=""   
+     if(checkPassword(newUserData.password) == false){
+        console.log(222)
+        document.getElementById("pswWrong").innerHTML ="<small> password must contain at least 6 characters, uppercase, lowercase, number, special character.</small>";
+        return;
+    }
+    document.getElementById("pswWrong").innerHTML=""
+    if(newUserData.password != newUserData.confirm)
+    {
+      document.getElementById("confirmWrong").innerHTML ="<small>Password are not maching</small>";
+      return;
+    }
+    document.getElementById("confirmWrong").innerHTML=""
+    
+    
+    $.ajax({
+        type: 'POST',
+        url: '/signup',
+        data: newUserData,
+        // Login Successful
+        success: function(userData){
+            document.getElementById("server_response").innerHTML="<span style='color: green;'>You are a new member, you can log in anytime! ";
+        },
+        error: function(res){
+            document.getElementById("server_response").innerHTML="User already exists";
+        }
+    });
+  }
+
+    // function CheckPassword(inputtxt, confirmation, email) {
+    //   var ok_psw = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,}$/;
+    //   if (inputtxt == "" || confirmation == "" || email == "") {
+    //     alert('Please fill missing details');
+    //   }
+    //   if (inputtxt.value == confirmation.value) {
+    //     if (inputtxt.value.match(ok_psw)) {
+    //       if (validateEmail(email))
+    //         alert(inputtxt.value + ' ' + email)
+    //       return true;
+    //     }
+    //     else {
+    //       alert("Password is not good..")
+    //     }
+    //   }
+    //   else {
+    //     alert('Password does not match confirmation...!')
+    //     return false;
+
+    //   }
+    // }
   </script>
 
   <style>
@@ -56,7 +128,7 @@
     #signup .container #signup-row #signup-column #signup-box {
       margin-top: 120px;
       max-width: 500px;
-      height: 340px;
+      height: 450px;
       border: 3px solid rgb(255, 255, 255);
       background-color: #1fe0;
 
@@ -95,7 +167,7 @@
 </head>
 <body>
 
-  <form method="post">
+<!-- <form method="post"> -->
     <div class="center">
       <div class="container">
         <div class="wrapper">
@@ -105,25 +177,27 @@
               <div id="signup-row" class="row justify-content-center align-items-center">
                 <div id="signup-column" class="col-md-4">
                   <div id="signup-box" class="col-md-8">
-                    <form id="signup-form" class="form" action="" method="post">
+                    <!-- <form id="signup-form" class="form" action="" method="post"> -->
                       <h3 class='text-center' style='font-size:30px; color:rgb(0, 0, 0);'>Sign Up</h3>
                       <br>
                       <div class="form-group">
                         <input type="text" class="form-control" placeholder="Enter Email" id="email" name="email" required>
+                        <label id="emailWrong" style="color:red"></label>
                       </div>
                       <div class="form-group">
-                        <input type="password" class="form-control" placeholder="Enter Password" id="psw" name="password" required>
+                        <input type="password" class="form-control" placeholder="Enter Password" id="psw" name="psw" required>
+                        <label id="pswWrong" style="color:red"></label>
                       </div>
                       <div class="form-group">
                         <input type="password" class="form-control" placeholder="Confirm Password" id="psw_conf"
                           required>
+                          <label id="confirmWrong" style="color:red"></label>
                       </div>
-                      <button class="btn btn-primary btn-lg btn-block"
-                        onclick="CheckPassword(document.getElementById('psw'),document.getElementById('psw_conf'),document.getElementById('email').value)">Create
-                        my account</button>
-                      <div class="text-center"">
+                      <button class="btn btn-primary btn-lg btn-block" onclick="signUpAuthentication()">Create my account</button>
+                        <label id="server_response" style="color:red"></label>
+                      <div class="text-center">
                                   <br>
-                                    <p>Already have an account? <a href=" log_in.html" style="color:#007bff">Log in</a>
+                                    <p>Already have an account? <a href="/login" style="color:#007bff">Log in</a>
                         </p>
                       </div>
                     </form>
