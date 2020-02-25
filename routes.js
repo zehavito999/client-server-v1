@@ -108,30 +108,31 @@ app.post("/signup", (req, res) => {
 });
 
 app.post("/forget", (req, res) => {
-  let password = db.getPassword(req.body.email,res);
-  console.log("user")
-  var mailOptions = {
-    to: req.body.email,
-    subject: "A password reminder",
-    text: "your password is:" +password
-  };
+  let passwordPromise = db.getPassword(req.body.email);
+
+//  let mailPromise =  new Promise(function (resolve, reject) {
   
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-    }
-    console.log("Message %s sent: %s", info.messageId, info.response);
-    
-   
-  });
-  console.log(req);
-  user.then(result => {
+  return passwordPromise.then(result => {
+
     if (result) {
-      res.redirect("/log_in");
-    } else {
-      res.writeHead(400);
-      res.end();
+      console.log(result)
+        var mailOptions = {
+          to: req.body.email,
+          subject: "A password reminder",
+          text: "your password is:" + result
+        };
+       
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              console.log(error);
+            }
+            console.log("Message %s sent: %s", info.messageId, info.response);
+            
+         });
+         return res.status(200).json({LastChangeTime: "temp"});  
     }
+    return res.status(500).json({LastChangeTime: "temp1"});  
+
   });
 });
 

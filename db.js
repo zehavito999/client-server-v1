@@ -103,22 +103,26 @@ function importData(user_email, res) {
   });
 
 }
-function getPassword(user_email, res) {
-  let query = `select email, password  from ${schemaName}.users where email='${user_email}'`;
-  DBclient.query(query, function (err, result) {
-    if (err) {
-      console.log(err.stack);
-      return reject(err);
-    }
-    else {
-      if (result.rowCount > 0) {
-        var decryptPsw1 = crypto.decryptPsw(
-          result.rows[0].password
-        );
-        return decryptPsw1;
-      }
-    }
-  });
+function getPassword(user_email) {
+  let query = `select email, password  from ${schemaName}.users where email='${user_email}'`
+    return new Promise(function (resolve, reject) {
+        DBclient.query(query, function (err, result) {
+          if (err) {
+            console.log(err.stack);
+            return reject(false);
+          }
+          else {
+            if (result.rowCount > 0) {
+              let decryptPsw1 = crypto.decryptPsw(
+                result.rows[0].password
+              );
+              return resolve(decryptPsw1);
+            }else{
+              return resolve(false);
+            }
+          }
+        });
+    });
 }
   
 module.exports.getPassword = getPassword;
